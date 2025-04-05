@@ -3,12 +3,17 @@ import { useDispatch } from 'react-redux'
 import { RxBookmark, RxBookmarkFilled } from 'react-icons/rx'
 import { deleteBook, toggleFavorite } from '../../redux/books/actionCreators'
 
-import { selectTitleFilter } from '../../redux/slices/filterSlice'
+import {
+  selectTitleFilter,
+  selectAuthorFilter,
+} from '../../redux/slices/filterSlice'
 import './BookList.css'
 
 const Booklist = () => {
   const books = useSelector((state) => state.books)
   const titleFilter = useSelector(selectTitleFilter)
+  const authorFilter = useSelector(selectAuthorFilter)
+
   const dispatch = useDispatch()
 
   const handleDelete = (id) => {
@@ -21,9 +26,11 @@ const Booklist = () => {
     const matchesTitle = book.title
       .toLowerCase()
       .includes(titleFilter.toLowerCase())
-
+    const matchesAuthor = book.author
+      .toLowerCase()
+      .includes(authorFilter.toLowerCase())
     console.log({ title: book.title, matchesTitle })
-    return matchesTitle
+    return matchesTitle && matchesAuthor
   })
 
   return (
